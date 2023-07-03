@@ -1,0 +1,6 @@
+*.iml
+*.xml
+*.mp4
+*/__pycache__
+*.pth
+!*latest.pth
