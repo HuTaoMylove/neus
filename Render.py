@@ -11,7 +11,7 @@ def get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals
     pts_flat = torch.reshape(pts, [-1, 3])
     dir_flat = None
     dists = z_vals[..., 1:] - z_vals[..., :-1]
-    dists = torch.cat([dists, torch.tensor([4 / 64], device=device).expand(dists[..., :1].shape)], -1)
+    dists = torch.cat([dists, torch.tensor([4 / 32], device=device).expand(dists[..., :1].shape)], -1)
     if use_view:
         dir_flat = F.normalize(torch.reshape(rays_d.unsqueeze(-2).expand_as(pts), [-1, 3]), p=2, dim=-1)
 

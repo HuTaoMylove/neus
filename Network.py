@@ -64,7 +64,7 @@ class SDFNetwork(nn.Module):
                  n_layers=8,
                  skip_in=(4,),
                  multires=0,
-                 bias=0.5,
+                 bias=0.8,
                  geometric_init=True,
                  weight_norm=True,
                  inside_outside=False):
@@ -244,4 +244,4 @@ class SingleVarianceNetwork(nn.Module):
         self.register_parameter('variance', nn.Parameter(torch.tensor(init_val)))
 
     def forward(self, x):
-        return torch.ones([len(x), 1],device=x.device) * torch.exp(self.variance * 10.0)
+        return torch.ones([len(x), 1], device=x.device) * torch.exp(self.variance * 10.0)

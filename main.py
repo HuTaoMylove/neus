@@ -29,7 +29,7 @@ if args.only_reconstruct:
     dicts = torch.load(
         logdir + f'/epoch_latest.pth',
         map_location=device)
-    net = SDFNetwork(multires=6).to(device)
+    net = SDFNetwork(multires=6, bias=args.bias).to(device)
     net.load_state_dict(dicts['sdf'])
     net.save_mesh(
         logdir + '/' + args.things + '.ply',
@@ -64,7 +64,7 @@ N = rays.shape[0]
 iterations = N // args.Batch_size
 print(f"There are {iterations} batches of rays and each batch contains {args.Batch_size} rays")
 
-sdf_network = SDFNetwork(multires=6).to(device)
+sdf_network = SDFNetwork(multires=6, bias=args.bias).to(device)
 deviation_network = SingleVarianceNetwork(init_val=0.3).to(device)
 color_network = RenderingNetwork(multires_view=4).to(device)
 
@@ -161,9 +161,9 @@ for e in range(last_e, args.epoch):
 
         psnr = -10. * torch.log(F.mse_loss(rgb, target_rgb).detach()).item() / torch.log(torch.tensor([10.]))
         writer.add_scalar('train/psnr', psnr, i + iterations * e)
-        writer.add_scalar('train/inv_s',1/deviation_network.variance.clone().detach().cpu().item())
+        writer.add_scalar('train/inv_s', 1 / deviation_network.variance.clone().detach().cpu().item())
 
-    r = test_rays[torch.randint(0,len(test_rays),[1]).item()]
+    r = test_rays[torch.randint(0, len(test_rays), [1]).item()]
     rays_o, rays_d, rays_rgb = torch.chunk(r, 3, dim=-1)
     rays_od = (rays_o, rays_d)
     rgb, _, _ = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
