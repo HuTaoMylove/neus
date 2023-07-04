@@ -1,0 +1,84 @@
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Traceback (most recent call last):
+  File "main.py", line 159, in <module>
+    rgb, _, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
+  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
+    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
+  File "/data/home/yemingzhi/nerf/neus/Render.py", line 21, in get_rgb_w
+    gradients = sdf_network.gradient(pts_flat).squeeze()
+  File "/data/home/yemingzhi/nerf/neus/Network.py", line 147, in gradient
+    gradients = torch.autograd.grad(
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/autograd/__init__.py", line 303, in grad
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 224.00 MiB (GPU 0; 23.65 GiB total capacity; 8.98 GiB already allocated; 199.31 MiB free; 9.03 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Traceback (most recent call last):
+  File "main.py", line 90, in <module>
+    rgb, depth, _ = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
+  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
+    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
+  File "/data/home/yemingzhi/nerf/neus/Render.py", line 21, in get_rgb_w
+    gradients = sdf_network.gradient(pts_flat).squeeze()
+  File "/data/home/yemingzhi/nerf/neus/Network.py", line 147, in gradient
+    gradients = torch.autograd.grad(
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/autograd/__init__.py", line 303, in grad
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 224.00 MiB (GPU 0; 23.65 GiB total capacity; 22.63 GiB already allocated; 178.31 MiB free; 22.72 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+Traceback (most recent call last):
+  File "main.py", line 90, in <module>
+    rgb, depth, _ = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
+  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
+    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
+  File "/data/home/yemingzhi/nerf/neus/Render.py", line 21, in get_rgb_w
+    gradients = sdf_network.gradient(pts_flat).squeeze()
+  File "/data/home/yemingzhi/nerf/neus/Network.py", line 147, in gradient
+    gradients = torch.autograd.grad(
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/autograd/__init__.py", line 303, in grad
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 224.00 MiB (GPU 0; 23.65 GiB total capacity; 22.63 GiB already allocated; 178.31 MiB free; 22.72 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+IMAGEIO FFMPEG_WRITER WARNING: input image is not divisible by macro_block_size=16, resizing from (200, 100) to (208, 112) to ensure video compatibility with most codecs and players. To prevent resizing, make your input image divisible by the macro_block_size or set the macro_block_size to 1 (risking incompatibility).
+[swscaler @ 0x5fa8600] Warning: data is not aligned! This can lead to a speed loss
+Process rays data!
+There are 488 batches of rays and each batch contains 2048 rays
+Process rays data!
+There are 488 batches of rays and each batch contains 2048 rays
+Traceback (most recent call last):
+  File "main.py", line 77, in <module>
+    dicts = torch.load(
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/serialization.py", line 791, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/serialization.py", line 271, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/serialization.py", line 252, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: './log/drums_(28,28)_bias_1.0_bs_2048_pt_False_wbg_False_res_100x100/epoch_latest.pth'
+IMAGEIO FFMPEG_WRITER WARNING: input image is not divisible by macro_block_size=16, resizing from (200, 100) to (208, 112) to ensure video compatibility with most codecs and players. To prevent resizing, make your input image divisible by the macro_block_size or set the macro_block_size to 1 (risking incompatibility).
+[swscaler @ 0x71ba600] Warning: data is not aligned! This can lead to a speed loss
+Process rays data!
+There are 488 batches of rays and each batch contains 2048 rays
+Process rays data!
+There are 244 batches of rays and each batch contains 4096 rays
+IMAGEIO FFMPEG_WRITER WARNING: input image is not divisible by macro_block_size=16, resizing from (200, 100) to (208, 112) to ensure video compatibility with most codecs and players. To prevent resizing, make your input image divisible by the macro_block_size or set the macro_block_size to 1 (risking incompatibility).
+[swscaler @ 0x6821600] Warning: data is not aligned! This can lead to a speed loss
+Process rays data!
+There are 488 batches of rays and each batch contains 2048 rays
+run.sh: line 1: 103068 Killed                  python main.py --epoch 40 --warm_up 6 --anneal 30 --things 'lego' --cuda 0 --Batch_size 1024 --factor 2 --co_samples 64 --re_samples 64
+run.sh: line 1: 107485 Killed                  python main.py --epoch 40 --warm_up 6 --anneal 30 --things 'lego' --cuda 1 --Batch_size 1024 --factor 2 --co_samples 64 --re_samples 64 --white_bkgd
+run.sh: line 1: 36074 Killed                  python main.py --epoch 40 --warm_up 6 --anneal 30 --things 'lego' --cuda 0 --Batch_size 2048 --factor 2 --co_samples 64 --re_samples 64 --bias 0.5
+run.sh: line 1: 54343 Killed                  python main.py --epoch 40 --warm_up 6 --anneal 30 --things 'lego' --cuda 1 --Batch_size 2048 --factor 2 --co_samples 64 --re_samples 64 --bias 0.5 --white_bkgd
+Process rays data!
+There are 199 batches of rays and each batch contains 6400 rays
+Process rays data!
+There are 199 batches of rays and each batch contains 6400 rays

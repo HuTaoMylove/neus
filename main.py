@@ -57,6 +57,7 @@ print("Process rays data!")
 
 rays = get_rgb_rays(images, poses, hwf, device)
 rays_mask = torch.from_numpy(masks).to(device).reshape(-1, 1).float()
+rays = rays[(rays_mask > 0.).squeeze(-1)]
 test_rays = get_rgb_rays(test_img, test_pose, hwf, device).reshape(-1, 9).split(args.Batch_size, dim=0)
 test_masks = torch.from_numpy(test_masks).to(device).reshape(-1, 1).float().split(args.Batch_size, dim=0)
 if render_poses is not None:
@@ -144,14 +145,10 @@ for e in range(last_e, args.epoch):
     else:
         cos_anneal_ratio = np.min([1.0, (e + 1) / args.anneal])
 
-    batch = torch.randperm(N)
-    rays = rays[batch, :]
-    mks = rays_mask[batch, :]
+    rays = rays[torch.randperm(N), :]
     ray_iter = iter(torch.split(rays, args.Batch_size, dim=0))
-    mask_iter = iter(torch.split(mks, args.Batch_size, dim=0))
     for i in range(iterations):
         train_rays = next(ray_iter)
-        train_masks = next(mask_iter)
         assert train_rays.shape == (args.Batch_size, 9)
 
         rays_o, rays_d, target_rgb = torch.chunk(train_rays, 3, dim=-1)
@@ -163,12 +160,12 @@ for e in range(last_e, args.epoch):
                                       cos_anneal_ratio=cos_anneal_ratio
                                       )
 
-        loss = F.mse_loss(train_masks * rgb, train_masks * target_rgb) + eikonal * 0.1
+        loss = F.mse_loss(rgb, target_rgb) + eikonal * 0.1
 
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        psnr = -10. * torch.log(torch.mean(((train_masks * rgb-train_masks * target_rgb)**2)[(train_masks>0.).squeeze(dim=-1)]).detach()).item() / torch.log(
+        psnr = -10. * torch.log(F.mse_loss(rgb, target_rgb).detach().clone()).item() / torch.log(
             torch.tensor([10.]))
         writer.add_scalar('train/psnr', psnr, i + iterations * e)
         writer.add_scalar('train/inv_s', 1 / torch.exp(deviation_network.variance * 10.0).clone().detach().cpu().item(),
@@ -194,9 +191,9 @@ for e in range(last_e, args.epoch):
              'epoch': e + 1}
     torch.save(state, logdir + f'/epoch_latest.pth')
 
-    if e % args.reconstruct_interval == 0 and e:
-        with torch.no_grad():
-            sdf_network.save_mesh(logdir + f'/{args.things}_{e}.ply', resolution=H, device=device)
+    #if e % args.reconstruct_interval == 0 and e:
+    #    with torch.no_grad():
+    #        sdf_network.save_mesh(logdir + f'/{args.things}_{e}.ply', resolution=H, device=device)
 
     if e % args.save_interval == 0 and e:
         state = {'sdf': sdf_network.state_dict(), 'color': color_network.state_dict(),
