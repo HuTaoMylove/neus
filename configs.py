@@ -18,18 +18,17 @@ def get_config():
     parser.add_argument("--factor", type=int, default=2)
     parser.add_argument("--test_skip", type=int, default=1)
     parser.add_argument("--val_skip", type=int, default=100)
-    parser.add_argument("--bias", type=float, default=0.8)
+    parser.add_argument("--bias", type=float, default=1.5)
 
-    parser.add_argument("--Batch_size", type=int, default=1024)
-    parser.add_argument("--co_samples", type=int, default=64)
-    parser.add_argument("--re_samples", type=int, default=64)
+    parser.add_argument("--Batch_size", type=int, default=512)
+    parser.add_argument("--co_samples", type=int, default=28)
+    parser.add_argument("--re_samples", type=int, default=28)
     parser.add_argument("--epoch", type=int, default=60)
     parser.add_argument("--warm_up", type=float, default=5)
     parser.add_argument("--anneal", type=float, default=40)
 
     parser.add_argument("--lr", type=float, default=5e-4)
 
-    parser.add_argument("--render_interval", type=int, default=0)
     parser.add_argument("--save_interval", type=int, default=1)
     parser.add_argument("--reconstruct_interval", type=int, default=5)
 
