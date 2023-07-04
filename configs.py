@@ -15,7 +15,7 @@ def get_config():
     parser.add_argument("--white_bkgd", action='store_true', default=False)
     parser.add_argument("--use_view", action='store_false', default=True)
     parser.add_argument("--only_reconstruct", action='store_true', default=False)
-    parser.add_argument("--factor", type=int, default=2)
+    parser.add_argument("--factor", type=int, default=8)
     parser.add_argument("--test_skip", type=int, default=1)
     parser.add_argument("--val_skip", type=int, default=100)
     parser.add_argument("--bias", type=float, default=1.5)

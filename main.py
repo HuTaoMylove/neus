@@ -41,12 +41,14 @@ lr = args.lr
 images, poses, render_poses, hwf, i_split = load_blender_data(datadir, args.factor, args.test_skip, args.val_skip)
 i_train, _, i_test = i_split
 masks = images[..., -1]
+masks = (masks > 0.5).astype('float64')
 if args.white_bkgd:
     images = images[..., :3] * images[..., -1:] + (1. - images[..., -1:])
 else:
     images = images[..., :3]
 test_img, test_pose = images[i_test], poses[i_test]
 test_masks = masks[i_test]
+test_masks = (test_masks > 0.5).astype('float64')
 if len(test_img.shape) == 3:
     test_img = np.expand_dims(test_img, 0)
     test_pose = np.expand_dims(test_pose, 0)
@@ -57,9 +59,9 @@ print("Process rays data!")
 
 rays = get_rgb_rays(images, poses, hwf, device)
 rays_mask = torch.from_numpy(masks).to(device).reshape(-1, 1).float()
-rays = rays[(rays_mask > 0.).squeeze(-1)]
 test_rays = get_rgb_rays(test_img, test_pose, hwf, device).reshape(-1, 9).split(args.Batch_size, dim=0)
 test_masks = torch.from_numpy(test_masks).to(device).reshape(-1, 1).float().split(args.Batch_size, dim=0)
+
 if render_poses is not None:
     val_rays = get_rays(render_poses, hwf, device).reshape(-1, 6).split(args.Batch_size, dim=0)
 
@@ -97,7 +99,7 @@ if args.render:
         rgb = rgb * m + (1. - m)
         rgb_list.append(rgb.detach())
         d = (depth.detach() - bound[0]) / (bound[1] - bound[0])
-        #d[(m == 0.).squeeze(-1)] = 1.
+        # d[(m == 0.).squeeze(-1)] = 1.
         d = torch.cat([d.unsqueeze(-1),
                        torch.zeros([d.shape[0], 1], device=device),
                        torch.ones([d.shape[0], 1], device=device) - d.unsqueeze(-1)], dim=-1)
@@ -136,6 +138,7 @@ for e in range(last_e, args.epoch):
 
     rays = rays[torch.randperm(N), :]
     ray_iter = iter(torch.split(rays, args.Batch_size, dim=0))
+    mask_iter = iter(torch.split(rays_mask, args.Batch_size, dim=0))
     for i in range(iterations):
         step = i + e * iterations
         if step < warmup_step:
@@ -153,26 +156,29 @@ for e in range(last_e, args.epoch):
             cos_anneal_ratio = np.min([1.0, (step + 1) / anneal_step])
 
         train_rays = next(ray_iter)
+        train_masks = next(mask_iter)
         assert train_rays.shape == (args.Batch_size, 9)
 
         rays_o, rays_d, target_rgb = torch.chunk(train_rays, 3, dim=-1)
         rays_od = (rays_o, rays_d)
-        rgb, _, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
-                                      N_samples=N_samples,
-                                      device=device,
-                                      use_view=args.use_view, perturb=args.perturb,
-                                      cos_anneal_ratio=cos_anneal_ratio
-                                      )
-
-        loss = F.mse_loss(rgb, target_rgb) + eikonal * 0.1
-
+        rgb, _, weights, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
+                                               N_samples=N_samples,
+                                               device=device,
+                                               use_view=args.use_view, perturb=args.perturb,
+                                               cos_anneal_ratio=cos_anneal_ratio
+                                               )
+        mask_sum = train_masks.sum() + 1e-5
+        color_error = (rgb - target_rgb) * train_masks
+        color_fine_loss = F.l1_loss(color_error, torch.zeros_like(color_error), reduction='sum') / mask_sum
+        psnr = 20.0 * torch.log10(
+            1.0 / (((rgb - target_rgb) ** 2 * train_masks).sum() / (mask_sum * 3.0)).sqrt()).detach().clone().cpu()
+        mask_loss = F.binary_cross_entropy(weights.clip(1e-3, 1.0 - 1e-3), train_masks)
+        loss = color_fine_loss + eikonal * 0.1 + mask_loss*0.1
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        psnr = -10. * torch.log(F.mse_loss(rgb, target_rgb).detach().clone()).item() / torch.log(
-            torch.tensor([10.]))
         writer.add_scalar('train/psnr', psnr, i + iterations * e)
-        writer.add_scalar('train/inv_s', 1 / torch.exp(deviation_network.variance * 10.0).clone().detach().cpu().item(),
+        writer.add_scalar('train/inv_s', 1 / torch.exp(deviation_network.variance * 10.0).detach().clone().cpu().item(),
                           i + iterations * e)
 
     # sample = torch.randint(0, len(test_rays), [1]).item()

@@ -82,4 +82,4 @@ def render_rays(sdf_network, color_network, deviation_network, rays, bound, N_sa
     depth_map = z_vals[torch.arange(z_vals.shape[0], dtype=int, device=device), torch.argmax(weights, dim=-1)]
     acc_map = torch.sum(weights, -1)
 
-    return rgb_map, depth_map, eikonal
+    return rgb_map, depth_map, torch.sum(weights,dim=-1,keepdim=True), eikonal
