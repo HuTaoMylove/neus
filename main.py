@@ -122,32 +122,36 @@ if args.reload:
 else:
     last_e = 0
 
-
 optimizer = torch.optim.Adam(
     chain(sdf_network.parameters(), deviation_network.parameters(), color_network.parameters()), lr)
 writer = SummaryWriter(logdir)
 setproctitle.setproctitle(exp_name)
 
+warmup_step = 1.0 * args.warm_up * iterations
+anneal_step = 1.0 * args.anneal * iterations
+all_step = 1.0 * args.epoch * iterations
+
 for e in range(last_e, args.epoch):
     # create iteration for training
-
-    if e < args.warm_up:
-        learning_factor = (e + 1) / args.warm_up
-    else:
-        progress = (e - args.warm_up) / (args.epoch - args.warm_up)
-        learning_factor = (np.cos(np.pi * progress) + 1.0) * 0.5 * (1 - 0.05) + 0.05
-
-    for g in optimizer.param_groups:
-        g['lr'] = lr * learning_factor
-
-    if args.anneal == 0.0:
-        cos_anneal_ratio = 1.
-    else:
-        cos_anneal_ratio = np.min([1.0, (e + 1) / args.anneal])
 
     rays = rays[torch.randperm(N), :]
     ray_iter = iter(torch.split(rays, args.Batch_size, dim=0))
     for i in range(iterations):
+        step = i + e * iterations
+        if step < warmup_step:
+            learning_factor = (step + 1) / warmup_step
+        else:
+            progress = (step - warmup_step) / (all_step - warmup_step)
+            learning_factor = (np.cos(np.pi * progress) + 1.0) * 0.5 * (1 - 0.05) + 0.05
+
+        for g in optimizer.param_groups:
+            g['lr'] = lr * learning_factor
+
+        if args.anneal == 0.0:
+            cos_anneal_ratio = 1.
+        else:
+            cos_anneal_ratio = np.min([1.0, (step + 1) / anneal_step])
+
         train_rays = next(ray_iter)
         assert train_rays.shape == (args.Batch_size, 9)
 
@@ -191,7 +195,7 @@ for e in range(last_e, args.epoch):
              'epoch': e + 1}
     torch.save(state, logdir + f'/epoch_latest.pth')
 
-    #if e % args.reconstruct_interval == 0 and e:
+    # if e % args.reconstruct_interval == 0 and e:
     #    with torch.no_grad():
     #        sdf_network.save_mesh(logdir + f'/{args.things}_{e}.ply', resolution=H, device=device)
 
