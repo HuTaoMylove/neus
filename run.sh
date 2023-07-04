@@ -1,1 +1,1 @@
-python main.py --epoch 60 --warm_up 1 --anneal 10   --things 'lego' --cuda 0 --Batch_size 1024 --factor 4 --co_samples 64 --re_samples 64  --bias 0.5 
+python main.py --epoch 40 --warm_up 1 --anneal 10   --things 'drums' --cuda 1 --Batch_size 3000 --factor 2 --co_samples 64 --re_samples 64  --bias 0.5 

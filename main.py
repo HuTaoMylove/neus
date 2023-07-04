@@ -94,10 +94,10 @@ if args.render:
                                     use_view=args.use_view, perturb=args.perturb,
                                     cos_anneal_ratio=1.0
                                     )
-        if args.white_bkgd:
-            rgb = rgb * m + (1. - m)
+        rgb = rgb * m + (1. - m)
         rgb_list.append(rgb.detach())
         d = (depth.detach() - bound[0]) / (bound[1] - bound[0])
+        #d[(m == 0.).squeeze(-1)] = 1.
         d = torch.cat([d.unsqueeze(-1),
                        torch.zeros([d.shape[0], 1], device=device),
                        torch.ones([d.shape[0], 1], device=device) - d.unsqueeze(-1)], dim=-1)

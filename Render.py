@@ -66,7 +66,7 @@ def render_rays(sdf_network, color_network, deviation_network, rays, bound, N_sa
             sdf = sdf_network.sdf(pts.reshape(-1, 3)).reshape(-1, uniform_N)
             for i in range(4):
                 new_z_vals = up_sample(rays_o, z_vals, sdf, important_N // 4,
-                                       64 * 2 ** i, device=device)
+                                       32 * 2 ** i, device=device)
                 z_vals, sdf = cat_z_vals(sdf_network, rays_o,
                                          rays_d,
                                          z_vals,
