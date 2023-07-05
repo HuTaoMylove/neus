@@ -93,7 +93,7 @@ if args.render:
         r, m = val_rays[i], test_masks[i]
         rays_o, rays_d = torch.chunk(r, 2, dim=-1)
         rays_od = (rays_o, rays_d)
-        rgb, depth, _ = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
+        rgb, depth, _,_ = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
                                     N_samples=N_samples,
                                     device=device,
                                     use_view=args.use_view, perturb=args.perturb,

@@ -1,133 +1,20 @@
-Process rays data!
-There are 1394 batches of rays and each batch contains 3600 rays
 Traceback (most recent call last):
-  File "main.py", line 160, in <module>
-    rgb, _, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
-    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 21, in get_rgb_w
-    gradients = sdf_network.gradient(pts_flat).squeeze()
-  File "/data/home/yemingzhi/nerf/neus/Network.py", line 147, in gradient
-    gradients = torch.autograd.grad(
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/autograd/__init__.py", line 303, in grad
-    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 450.00 MiB (GPU 0; 23.65 GiB total capacity; 21.95 GiB already allocated; 344.31 MiB free; 22.56 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+  File "main.py", line 9, in <module>
+    from Network import SDFNetwork, RenderingNetwork, SingleVarianceNetwork
+  File "/data/home/yemingzhi/nerf/neus/Network.py", line 164
+    sigma = self.-sdf(pts.to(device))
+                 ^
+SyntaxError: invalid syntax
 Process rays data!
-There are 1476 batches of rays and each batch contains 3400 rays
-Traceback (most recent call last):
-  File "main.py", line 160, in <module>
-    rgb, _, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
-    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 21, in get_rgb_w
-    gradients = sdf_network.gradient(pts_flat).squeeze()
-  File "/data/home/yemingzhi/nerf/neus/Network.py", line 147, in gradient
-    gradients = torch.autograd.grad(
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/autograd/__init__.py", line 303, in grad
-    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 426.00 MiB (GPU 0; 23.65 GiB total capacity; 22.14 GiB already allocated; 216.31 MiB free; 22.69 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
-Process rays data!
-There are 1568 batches of rays and each batch contains 3200 rays
-Traceback (most recent call last):
-  File "main.py", line 160, in <module>
-    rgb, _, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
-    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 22, in get_rgb_w
-    sampled_color = color_network(pts_flat, gradients, dir_flat, feature_vector).reshape(pts.shape)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/data/home/yemingzhi/nerf/neus/Network.py", line 234, in forward
-    x = self.relu(x)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/modules/activation.py", line 103, in forward
-    return F.relu(input, inplace=self.inplace)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/functional.py", line 1457, in relu
-    result = torch.relu(input)
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 400.00 MiB (GPU 0; 23.65 GiB total capacity; 22.31 GiB already allocated; 356.31 MiB free; 22.55 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
-Process rays data!
-There are 1673 batches of rays and each batch contains 3000 rays
-Traceback (most recent call last):
-  File "main.py", line 160, in <module>
-    rgb, _, eikonal = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 77, in render_rays
-    rgb, weights, eikonal = get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals,
-  File "/data/home/yemingzhi/nerf/neus/Render.py", line 22, in get_rgb_w
-    sampled_color = color_network(pts_flat, gradients, dir_flat, feature_vector).reshape(pts.shape)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/data/home/yemingzhi/nerf/neus/Network.py", line 234, in forward
-    x = self.relu(x)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/modules/activation.py", line 103, in forward
-    return F.relu(input, inplace=self.inplace)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/functional.py", line 1457, in relu
-    result = torch.relu(input)
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 376.00 MiB (GPU 0; 23.65 GiB total capacity; 22.21 GiB already allocated; 202.31 MiB free; 22.70 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
-Exception in thread Thread-1:
-Traceback (most recent call last):
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/threading.py", line 932, in _bootstrap_inner
-    self.run()
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 244, in run
-    self._run()
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 275, in _run
-    self._record_writer.write(data)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/record_writer.py", line 40, in write
-    self._writer.write(header + header_crc + data + footer_crc)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 773, in write
-    self.fs.append(self.filename, file_content, self.binary_mode)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 167, in append
-    self._write(filename, file_content, "ab" if binary_mode else "a")
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 171, in _write
-    with io.open(filename, mode, encoding=encoding) as f:
-FileNotFoundError: [Errno 2] No such file or directory: b'./log/drums_(28,28)_bias_0.5_bs_2048_pt_False_wbg_True_res_200x200/events.out.tfevents.1688525056.amax.71516.0'
-Process rays data!
-There are 1953 batches of rays and each batch contains 2048 rays
-Traceback (most recent call last):
-  File "main.py", line 181, in <module>
-    writer.add_scalar('train/inv_s', 1 / torch.exp(deviation_network.variance * 10.0).detach().clone().cpu().item(),
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/utils/tensorboard/writer.py", line 391, in add_scalar
-    self._get_file_writer().add_summary(summary, global_step, walltime)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/utils/tensorboard/writer.py", line 113, in add_summary
-    self.add_event(event, global_step, walltime)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/utils/tensorboard/writer.py", line 98, in add_event
-    self.event_writer.add_event(event)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 117, in add_event
-    self._async_writer.write(event.SerializeToString())
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 171, in write
-    self._check_worker_status()
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 212, in _check_worker_status
-    raise exception
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/threading.py", line 932, in _bootstrap_inner
-    self.run()
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 244, in run
-    self._run()
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 275, in _run
-    self._record_writer.write(data)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/record_writer.py", line 40, in write
-    self._writer.write(header + header_crc + data + footer_crc)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 773, in write
-    self.fs.append(self.filename, file_content, self.binary_mode)
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 167, in append
-    self._write(filename, file_content, "ab" if binary_mode else "a")
-  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 171, in _write
-    with io.open(filename, mode, encoding=encoding) as f:
-FileNotFoundError: [Errno 2] No such file or directory: b'./log/drums_(28,28)_bias_0.5_bs_2048_pt_False_wbg_True_res_200x200/events.out.tfevents.1688525056.amax.71516.0'
-Process rays data!
-There are 976 batches of rays and each batch contains 4096 rays
+There are 488 batches of rays and each batch contains 2048 rays
 ==> Finished saving mesh.
-  File "main.py", line 39
-    sys.exit()
-    ^
-SyntaxError: invalid syntax
-  File "main.py", line 39
-    sys.exit()
-    ^
-SyntaxError: invalid syntax
-  File "main.py", line 39
-    sys.exit()
-    ^
-SyntaxError: invalid syntax
-==> Finished saving mesh.
+Process rays data!
+There are 488 batches of rays and each batch contains 2048 rays
+Traceback (most recent call last):
+  File "main.py", line 96, in <module>
+    rgb, depth, _ = render_rays(sdf_network, color_network, deviation_network, rays_od, bound=bound,
+ValueError: too many values to unpack (expected 3)
+IMAGEIO FFMPEG_WRITER WARNING: input image is not divisible by macro_block_size=16, resizing from (200, 100) to (208, 112) to ensure video compatibility with most codecs and players. To prevent resizing, make your input image divisible by the macro_block_size or set the macro_block_size to 1 (risking incompatibility).
+[swscaler @ 0x5bff600] Warning: data is not aligned! This can lead to a speed loss
+Process rays data!
+There are 488 batches of rays and each batch contains 2048 rays

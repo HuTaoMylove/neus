@@ -1,1 +1,1 @@
-python main.py --epoch 20 --warm_up 1 --anneal 6   --things 'drums' --cuda 0 --Batch_size 2048 --factor 4 --co_samples 28 --re_samples 28  --bias 0.5 --white_bkgd --only_reconstruct
+python main.py --epoch 20 --warm_up 1 --anneal 6   --things 'drums' --cuda 0 --Batch_size 2048 --factor 8 --co_samples 28 --re_samples 28  --bias 0.5 --white_bkgd --use_mask --render
