@@ -161,7 +161,7 @@ class SDFNetwork(nn.Module):
 
         def query_func(pts):
             with torch.no_grad():
-                sigma = -self.sdf(pts.to(device))
+                sigma = self.sdf(pts.to(device))
             return sigma
 
         vertices, triangles = extract_geometry(bound_min, bound_max,

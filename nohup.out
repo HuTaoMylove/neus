@@ -66,3 +66,68 @@ Traceback (most recent call last):
   File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/nn/functional.py", line 1457, in relu
     result = torch.relu(input)
 torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 376.00 MiB (GPU 0; 23.65 GiB total capacity; 22.21 GiB already allocated; 202.31 MiB free; 22.70 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 244, in run
+    self._run()
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 275, in _run
+    self._record_writer.write(data)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/record_writer.py", line 40, in write
+    self._writer.write(header + header_crc + data + footer_crc)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 773, in write
+    self.fs.append(self.filename, file_content, self.binary_mode)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 167, in append
+    self._write(filename, file_content, "ab" if binary_mode else "a")
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 171, in _write
+    with io.open(filename, mode, encoding=encoding) as f:
+FileNotFoundError: [Errno 2] No such file or directory: b'./log/drums_(28,28)_bias_0.5_bs_2048_pt_False_wbg_True_res_200x200/events.out.tfevents.1688525056.amax.71516.0'
+Process rays data!
+There are 1953 batches of rays and each batch contains 2048 rays
+Traceback (most recent call last):
+  File "main.py", line 181, in <module>
+    writer.add_scalar('train/inv_s', 1 / torch.exp(deviation_network.variance * 10.0).detach().clone().cpu().item(),
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/utils/tensorboard/writer.py", line 391, in add_scalar
+    self._get_file_writer().add_summary(summary, global_step, walltime)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/utils/tensorboard/writer.py", line 113, in add_summary
+    self.add_event(event, global_step, walltime)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/torch/utils/tensorboard/writer.py", line 98, in add_event
+    self.event_writer.add_event(event)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 117, in add_event
+    self._async_writer.write(event.SerializeToString())
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 171, in write
+    self._check_worker_status()
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 212, in _check_worker_status
+    raise exception
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 244, in run
+    self._run()
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/event_file_writer.py", line 275, in _run
+    self._record_writer.write(data)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/summary/writer/record_writer.py", line 40, in write
+    self._writer.write(header + header_crc + data + footer_crc)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 773, in write
+    self.fs.append(self.filename, file_content, self.binary_mode)
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 167, in append
+    self._write(filename, file_content, "ab" if binary_mode else "a")
+  File "/data/home/yemingzhi/miniconda3/envs/env38/lib/python3.8/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 171, in _write
+    with io.open(filename, mode, encoding=encoding) as f:
+FileNotFoundError: [Errno 2] No such file or directory: b'./log/drums_(28,28)_bias_0.5_bs_2048_pt_False_wbg_True_res_200x200/events.out.tfevents.1688525056.amax.71516.0'
+Process rays data!
+There are 976 batches of rays and each batch contains 4096 rays
+==> Finished saving mesh.
+  File "main.py", line 39
+    sys.exit()
+    ^
+SyntaxError: invalid syntax
+  File "main.py", line 39
+    sys.exit()
+    ^
+SyntaxError: invalid syntax
+  File "main.py", line 39
+    sys.exit()
+    ^
+SyntaxError: invalid syntax
+==> Finished saving mesh.
