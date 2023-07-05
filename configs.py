@@ -19,6 +19,7 @@ def get_config():
     parser.add_argument("--test_skip", type=int, default=1)
     parser.add_argument("--val_skip", type=int, default=100)
     parser.add_argument("--bias", type=float, default=1.5)
+    parser.add_argument("--use_mask", action='store_true', default=False)
 
     parser.add_argument("--Batch_size", type=int, default=512)
     parser.add_argument("--co_samples", type=int, default=28)

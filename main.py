@@ -40,15 +40,18 @@ if args.only_reconstruct:
 lr = args.lr
 images, poses, render_poses, hwf, i_split = load_blender_data(datadir, args.factor, args.test_skip, args.val_skip)
 i_train, _, i_test = i_split
-masks = images[..., -1]
-masks = (masks > 0.5).astype('float64')
+if args.use_mask:
+    masks = images[..., -1]
+    masks = (masks > 0.5).astype('float64')
+else:
+    masks = np.ones_like(images[..., -1]).astype('float64')
 if args.white_bkgd:
     images = images[..., :3] * images[..., -1:] + (1. - images[..., -1:])
 else:
     images = images[..., :3]
 test_img, test_pose = images[i_test], poses[i_test]
 test_masks = masks[i_test]
-test_masks = (test_masks > 0.5).astype('float64')
+
 if len(test_img.shape) == 3:
     test_img = np.expand_dims(test_img, 0)
     test_pose = np.expand_dims(test_pose, 0)
@@ -94,9 +97,8 @@ if args.render:
                                     N_samples=N_samples,
                                     device=device,
                                     use_view=args.use_view, perturb=args.perturb,
-                                    cos_anneal_ratio=1.0
+                                    cos_anneal_ratio=1.0, white_background=args.white_bkgd
                                     )
-        rgb = rgb * m + (1. - m)
         rgb_list.append(rgb.detach())
         d = (depth.detach() - bound[0]) / (bound[1] - bound[0])
         # d[(m == 0.).squeeze(-1)] = 1.
@@ -105,7 +107,6 @@ if args.render:
                        torch.ones([d.shape[0], 1], device=device) - d.unsqueeze(-1)], dim=-1)
         depth_list.append(d)
     rgb = torch.cat(rgb_list, dim=0).reshape(-1, H, W, 3)
-
     depth = torch.cat(depth_list, dim=0).reshape(-1, H, W, 3)
     result = torch.cat([rgb, depth], dim=2)
 
@@ -165,15 +166,14 @@ for e in range(last_e, args.epoch):
                                                N_samples=N_samples,
                                                device=device,
                                                use_view=args.use_view, perturb=args.perturb,
-                                               cos_anneal_ratio=cos_anneal_ratio
+                                               cos_anneal_ratio=cos_anneal_ratio, white_background=args.white_bkgd
                                                )
         mask_sum = train_masks.sum() + 1e-5
         color_error = (rgb - target_rgb) * train_masks
         color_fine_loss = F.l1_loss(color_error, torch.zeros_like(color_error), reduction='sum') / mask_sum
-        psnr = 20.0 * torch.log10(
-            1.0 / (((rgb - target_rgb) ** 2 * train_masks).sum() / (mask_sum * 3.0)).sqrt()).detach().clone().cpu()
+        psnr = 20.0 * torch.log10(1.0 / (((rgb - target_rgb) ** 2 * train_masks).sum() / (mask_sum * 3.0)).sqrt()).detach().clone().cpu()
         mask_loss = F.binary_cross_entropy(weights.clip(1e-3, 1.0 - 1e-3), train_masks)
-        loss = color_fine_loss + eikonal * 0.1 + mask_loss*0.1
+        loss = color_fine_loss + eikonal * 0.1 + mask_loss * float(args.use_mask) / 10
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

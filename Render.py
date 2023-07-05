@@ -45,7 +45,7 @@ def get_rgb_w(sdf_network, color_network, deviation_network, pts, rays_d, z_vals
 
 def render_rays(sdf_network, color_network, deviation_network, rays, bound, N_samples, device, noise_std=.0,
                 use_view=False, perturb=False,
-                cos_anneal_ratio=1.0, ):
+                cos_anneal_ratio=1.0, white_background=False):
     rays_o, rays_d = rays
     near, far = bound
     uniform_N, important_N = N_samples
@@ -81,5 +81,6 @@ def render_rays(sdf_network, color_network, deviation_network, rays, bound, N_sa
     rgb_map = torch.sum(weights[..., None] * rgb, dim=-2)
     depth_map = z_vals[torch.arange(z_vals.shape[0], dtype=int, device=device), torch.argmax(weights, dim=-1)]
     acc_map = torch.sum(weights, -1)
-
-    return rgb_map, depth_map, torch.sum(weights,dim=-1,keepdim=True), eikonal
+    if white_background:
+        rgb_map = rgb_map + 1. - acc_map.unsqueeze(-1)
+    return rgb_map, depth_map, torch.sum(weights, dim=-1, keepdim=True), eikonal
